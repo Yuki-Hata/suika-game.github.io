@@ -6,7 +6,7 @@ let total_score = 0
 // オブジェクトの定義の配列
 const objectDefinitions = [
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 25,
         label: "suzu_circle",
         originalWidth: 637, // 画像の元の幅
@@ -14,7 +14,7 @@ const objectDefinitions = [
         score: 10
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 30,
         label: "kanineko_circle",
         originalWidth: 637, // 画像の元の幅
@@ -22,7 +22,7 @@ const objectDefinitions = [
         score: 20
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 35,
         label: "nikukyu_circle",
         originalWidth: 637, // 画像の元の幅
@@ -30,7 +30,7 @@ const objectDefinitions = [
         score: 30
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 40,
         label: "mouse_circle",
         originalWidth: 637, // 画像の元の幅
@@ -38,7 +38,7 @@ const objectDefinitions = [
         score: 40
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 50,
         label: "neko_circle",
         originalWidth: 637, // 画像の元の幅
@@ -46,7 +46,7 @@ const objectDefinitions = [
         score: 50
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 60,
         label: "ebi_circle",
         originalWidth: 637, // 画像の元の幅
@@ -54,7 +54,7 @@ const objectDefinitions = [
         score: 60
     },
     {
-        texture: "/img/dekkachan.png",
+        texture: "./img/dekkachan.png",
         size: 80,
         label: "lion_circle",
         originalWidth: 637, // 画像の元の幅
