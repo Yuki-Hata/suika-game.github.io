@@ -1,6 +1,7 @@
 <!DOCTYPE>
-<html lang="">
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script src="./node_modules/matter-js/build/matter.js" type="text/javascript"></script>
     <title></title>
 </head>
@@ -10,12 +11,67 @@
         font-size: 30px;
         margin-bottom: 24px;
     }
+
+    body {
+        /*background-image: url('./img/background/casino.jpg'); !* 背景画像のパス *!*/
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    p {
+        font-size: 30px;
+        margin: 0;
+    }
+
+    .images {
+        display: flex;
+        width: 100vw;
+        max-width: 1400px;
+        margin-bottom: 8px;
+        align-items: center;
+
+        img {
+            width: calc(100% / 12 - 20px);
+            height: calc(100% / 12 - 20px);
+        }
+
+        span {
+            font-size: 3.2vw;
+            display: inline-block;
+            margin: 0 8px;
+        }
+    }
 </style>
-<div id="background"></div>
-<div class="canvas-wrap">
-    <canvas id="matter-canvas"></canvas>
-</div>
+<p>PCのみ動作</p>
+<p>←→で移動、スペースで落下</p>
+
+<canvas id="matter-canvas"></canvas>
 <div class="score">score: <span id="score">0</span></div>
+<div class="images" id="images">
+    <img src="./img/1_slime.png" alt="slime">
+    <span> > </span>
+    <img src="./img/2_hoimi_slime.png" alt="hoimi_slime">
+    <span> > </span>
+    <img src="./img/3_arumiraji.png" alt="arumiraji">
+    <span> > </span>
+    <img src="./img/4_minidemon.png" alt="minidemon">
+    <span> > </span>
+    <img src="./img/5_bakudan_iwa.png" alt="bakudan_iwa">
+    <span> > </span>
+</div>
+<div class="images" id="images2">
+    <img src="./img/6_baberu_boburu.png" alt="baberu_boburu">
+    <span> > </span>
+    <img src="./img/hatena.png" alt="">
+    <span> > </span>
+    <img src="./img/hatena.png" alt="">
+    <span> > </span>
+    <img src="./img/hatena.png" alt="">
+    <span> > </span>
+    <img src="./img/hatena.png" alt="">
+    <span> > </span>
+    <img src="./img/hatena.png" alt="">
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="./script.js"></script>

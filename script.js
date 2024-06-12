@@ -8,13 +8,13 @@ const audioContext = new AudioContext();
 let bgmSource;
 // BGMのパス
 const bgmPath = [
-    null, // slime, hoimi_slime, arumiraji, minidemon, bakudan_iwa, baberu_boburu metauにはBGMなし
+    null, // slime, hoimi_slime, arumiraji, minidemon, bakudan_iwa, baberu_boburu にはBGMなし
     null,
     null,
     null,
     null,
     null,
-    null,
+    './sound/don_mogura.mp3',
     './sound/dorumagesu.mp3',
     './sound/rapuso-n.mp3',
     './sound/dekkachan.mp3',
@@ -92,9 +92,9 @@ const objectDefinitions = [
         score: 70
     },
     {
-        texture: "./img/7_metal_king.png",
+        texture: "./img/7_don_mogura.png",
         size: 160,
-        label: "metal_king",
+        label: "don_mogura",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
         score: 70
@@ -135,7 +135,8 @@ const objectDefinitions = [
 
 // 次に落とすオブジェクトをランダムに選択して作成する関数
 function createRandomFallingObject(x, y) {
-    const randomIndex = Math.floor(Math.random() * 6);
+    // const randomIndex = Math.floor(Math.random() * 6);
+    const randomIndex = 5;
     const objectDef = objectDefinitions[randomIndex];
 
     // スケールを計算（オブジェクトのサイズに合わせる）
@@ -198,6 +199,11 @@ World.add(engine.world, [ground, leftWall, rightWall]);
 // BGM再生済みフラグの配列
 const isBgmPlayed = Array(bgmPath.length).fill(false); // 全てのBGMを未再生に初期化
 
+// images 要素を取得
+const imagesElement = document.getElementById('images2');
+const imageElements = imagesElement.querySelectorAll('img');
+
+
 // 2つのオブジェクトが衝突した時に呼ばれる関数
 function mergeBodies(pair) {
     const bodyA = pair.bodyA;
@@ -210,10 +216,17 @@ function mergeBodies(pair) {
         if (nextObjectDef) {
             // BGM再生処理を追加
             const bgmIndex = objectDefinitions.findIndex(obj => obj.label === nextObjectDef.label);
-            if (bgmIndex >= 7 && bgmIndex <= 10 && !isBgmPlayed[bgmIndex]) { // 8~11のオブジェクトで、まだ再生されていない場合
+            if (bgmIndex >= 6 && bgmIndex <= 10 && !isBgmPlayed[bgmIndex]) { // 7~11のオブジェクトで、まだ再生されていない場合
                 playBgm(bgmIndex);
                 isBgmPlayed[bgmIndex] = true; // 再生済みフラグを立てる
             }
+            // 画像差し替え処理を追加
+            if (bgmIndex >= 6 && bgmIndex <= 10) { // 7~11のオブジェクトの場合
+                if (imageElements[bgmIndex - 5].src.endsWith('hatena.png')) { // まだhatena.pngの場合
+                    imageElements[bgmIndex - 5].src = nextObjectDef.texture; // 画像を差し替え
+                }
+            }
+
             total_score += nextObjectDef.score;
             $('#score').html(total_score.toString())
             const newX = (bodyA.position.x + bodyB.position.x) / 2;
