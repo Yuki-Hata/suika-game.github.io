@@ -21,6 +21,60 @@ const bgmPath = [
     './sound/sonshi.mp3',
 ];
 
+// ボタン要素を取得
+const leftButton = document.getElementById('leftButton');
+const dropButton = document.getElementById('dropButton');
+const rightButton = document.getElementById('rightButton');
+
+// ボタンが押されているかどうかのフラグ
+let isLeftButtonPressed = false;
+let isRightButtonPressed = false;
+
+// ボタンのイベントリスナーを設定
+leftButton.addEventListener('mousedown', () => {
+    isLeftButtonPressed = true;
+    moveLeftInterval = setInterval(() => {
+        if (isLeftButtonPressed && !isFalling) {
+            Body.translate(nextObject, { x: -20, y: 0 });
+        }
+    }, 100); // 100ミリ秒ごとに移動
+});
+
+leftButton.addEventListener('mouseup', () => {
+    isLeftButtonPressed = false;
+    clearInterval(moveLeftInterval); // インターバルをクリア
+});
+
+// 右ボタンも同様に設定
+rightButton.addEventListener('mousedown', () => {
+    isRightButtonPressed = true;
+    moveRightInterval = setInterval(() => {
+        if (isRightButtonPressed && !isFalling) {
+            Body.translate(nextObject, { x: 20, y: 0 });
+        }
+    }, 100); // 100ミリ秒ごとに移動
+});
+
+rightButton.addEventListener('mouseup', () => {
+    isRightButtonPressed = false;
+    clearInterval(moveRightInterval); // インターバルをクリア
+});
+
+dropButton.addEventListener('click', () => {
+    if (!isFalling) {
+        isFalling = true;
+        Body.setStatic(nextObject, false);
+
+        // ... (BGM再生処理)
+
+        setTimeout(() => {
+            nextObject = createRandomFallingObject(width / 2, 30);
+            World.add(engine.world, nextObject);
+            isFalling = false;
+        }, 2000);
+    }
+});
+
 // BGMファイルの読み込み
 fetch('./sound/DQ8_casino.mp3')
     .then(response => response.arrayBuffer())
@@ -180,7 +234,7 @@ const render = Render.create({
         wireframes: false,
         background: 'rgba(0,0,0,0)',
         width: window.innerWidth * 0.99,
-        height: window.innerHeight * 0.8,
+        height: window.innerHeight * 0.75,
     }
 });
 
