@@ -21,7 +21,21 @@ const bgmPath = [
     './sound/sonshi.mp3',
 ];
 
-// ... (他のコードは変更なし)
+let firstTouch = true;
+
+// touchstart イベントリスナーを追加
+document.addEventListener('touchstart', () => {
+    if (firstTouch) {
+        // AudioContext を再開し、BGM を再生
+        audioContext.resume().then(() => {
+            if (bgmSource && !bgmSource.isStarted) {
+                bgmSource.start();
+                bgmSource.isStarted = true;
+            }
+        });
+        firstTouch = false;
+    }
+});
 
 // ボタン要素を取得
 const leftButton = document.getElementById('leftButton');
@@ -72,6 +86,14 @@ dropButton.addEventListener('touchstart', () => {
         isFalling = true;
         Body.setStatic(nextObject, false);
 
+        // BGM再生 (初回のみ)
+        if (bgmSource && !bgmSource.isStarted) {
+            audioContext.resume().then(() => {
+                bgmSource.start();
+                bgmSource.isStarted = true;
+            });
+        }
+
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
             World.add(engine.world, nextObject); // nextObject を World に追加
@@ -79,11 +101,10 @@ dropButton.addEventListener('touchstart', () => {
         }, 2000);
     }
 });
-
 // 画面スクロール禁止
-document.addEventListener('touchmove', function(event) {
+document.addEventListener('touchmove', function (event) {
     event.preventDefault();
-}, { passive: false }); // passive: false を指定
+}, {passive: false}); // passive: false を指定
 
 // BGMファイルの読み込み
 fetch('./sound/DQ8_casino.mp3')
@@ -94,13 +115,16 @@ fetch('./sound/DQ8_casino.mp3')
         bgmSource.buffer = audioBuffer;
         bgmSource.connect(audioContext.destination);
         bgmSource.loop = true; // ループ再生
+        bgmSource.isStarted = false; // 再生開始済みフラグを初期化
 
         // bgmSource が初期化された後に再生を開始
         if (document.readyState === 'complete') {
             bgmSource.start();
+            bgmSource.isStarted = true; // 再生済みフラグをtrueに
         } else {
             document.addEventListener('DOMContentLoaded', () => {
                 bgmSource.start(); // ページ読み込み時に再生
+                bgmSource.isStarted = true; // 再生済みフラグをtrueに
             });
         }
     });
@@ -318,7 +342,6 @@ function mergeBodies(pair) {
 // BGMを再生する関数
 async function playBgm(index) {
     if (!bgmPath[index]) return; // BGMパスがnullの場合は再生しない
-
     if (bgmSource) {
         bgmSource.stop(); // 現在のBGMを停止
     }
@@ -327,7 +350,7 @@ async function playBgm(index) {
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-    bgmSource = audioContext.createBufferSource();
+    bgmSource = audioContext.createBufferSource(); // 新しいAudioBufferSourceNodeを作成
     bgmSource.buffer = audioBuffer;
     bgmSource.connect(audioContext.destination);
     bgmSource.loop = true;
