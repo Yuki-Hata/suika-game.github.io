@@ -21,6 +21,8 @@ const bgmPath = [
     './sound/sonshi.mp3',
 ];
 
+// ... (他のコードは変更なし)
+
 // ボタン要素を取得
 const leftButton = document.getElementById('leftButton');
 const dropButton = document.getElementById('dropButton');
@@ -30,42 +32,51 @@ const rightButton = document.getElementById('rightButton');
 let isLeftButtonPressed = false;
 let isRightButtonPressed = false;
 
-// ボタンのイベントリスナーを設定
-leftButton.addEventListener('mousedown', () => {
+// インターバルIDを格納する変数
+let moveLeftInterval;
+let moveRightInterval;
+
+// ボタンのイベントリスナーを設定 (touchstart, touchend イベントに変更)
+leftButton.addEventListener('touchstart', () => {
     isLeftButtonPressed = true;
     moveLeftInterval = setInterval(() => {
         if (isLeftButtonPressed && !isFalling) {
-            Body.translate(nextObject, { x: -20, y: 0 });
+            Body.translate(nextObject, {x: -20, y: 0});
         }
     }, 100); // 100ミリ秒ごとに移動
 });
 
-leftButton.addEventListener('mouseup', () => {
+leftButton.addEventListener('touchend', () => { // touchend に修正
     isLeftButtonPressed = false;
     clearInterval(moveLeftInterval); // インターバルをクリア
 });
 
-// 右ボタンも同様に設定
-rightButton.addEventListener('mousedown', () => {
+// 右ボタンも同様に設定 (touchstart, touchend イベントに変更)
+rightButton.addEventListener('touchstart', () => {
     isRightButtonPressed = true;
     moveRightInterval = setInterval(() => {
         if (isRightButtonPressed && !isFalling) {
-            Body.translate(nextObject, { x: 20, y: 0 });
+            Body.translate(nextObject, {x: 20, y: 0});
         }
     }, 100); // 100ミリ秒ごとに移動
 });
 
-rightButton.addEventListener('mouseup', () => {
+rightButton.addEventListener('touchend', () => { // touchend に修正
     isRightButtonPressed = false;
     clearInterval(moveRightInterval); // インターバルをクリア
 });
 
-dropButton.addEventListener('click', () => {
+// Drop ボタンも touchstart イベントに変更
+dropButton.addEventListener('touchstart', () => {
     if (!isFalling) {
         isFalling = true;
         Body.setStatic(nextObject, false);
 
-        // ... (BGM再生処理)
+        // BGM再生 (初回のみ)
+        if (bgmSource && !bgmSource.isStarted) {
+            bgmSource.start();
+            bgmSource.isStarted = true; // 再生済みフラグ
+        }
 
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
@@ -74,6 +85,19 @@ dropButton.addEventListener('click', () => {
         }, 2000);
     }
 });
+
+// touchmove イベントを追加 (タッチ中の移動に対応)
+document.addEventListener('touchmove', (event) => {
+    if (!isFalling) {
+        const touchX = event.touches[0].clientX;
+        if (touchX < width / 2) {
+            Body.translate(nextObject, {x: -20, y: 0});
+        } else {
+            Body.translate(nextObject, {x: 20, y: 0});
+        }
+    }
+});
+
 
 // BGMファイルの読み込み
 fetch('./sound/DQ8_casino.mp3')
