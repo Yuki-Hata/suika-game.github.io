@@ -23,16 +23,19 @@
         margin: 0;
     }
 
-    .images {
-        display: flex;
+    .images-wrap {
         width: 100vw;
         max-width: 1400px;
+    }
+
+    .images {
+        display: flex;
         margin-bottom: 8px;
         align-items: center;
 
         img {
-            width: calc(100% / 12 - 20px);
-            height: calc(100% / 12 - 20px);
+            width: calc(100% / 7.5);
+            height: calc(100% / 7.5);
         }
 
         span {
@@ -47,30 +50,32 @@
 
 <canvas id="matter-canvas"></canvas>
 <div class="score">score: <span id="score">0</span></div>
-<div class="images" id="images">
-    <img src="./img/1_slime.png" alt="slime">
-    <span> > </span>
-    <img src="./img/2_hoimi_slime.png" alt="hoimi_slime">
-    <span> > </span>
-    <img src="./img/3_arumiraji.png" alt="arumiraji">
-    <span> > </span>
-    <img src="./img/4_minidemon.png" alt="minidemon">
-    <span> > </span>
-    <img src="./img/5_bakudan_iwa.png" alt="bakudan_iwa">
-    <span> > </span>
-</div>
-<div class="images" id="images2">
-    <img src="./img/6_baberu_boburu.png" alt="baberu_boburu">
-    <span> > </span>
-    <img src="./img/hatena.png" alt="">
-    <span> > </span>
-    <img src="./img/hatena.png" alt="">
-    <span> > </span>
-    <img src="./img/hatena.png" alt="">
-    <span> > </span>
-    <img src="./img/hatena.png" alt="">
-    <span> > </span>
-    <img src="./img/hatena.png" alt="">
+<div class="images-wrap">
+    <div class="images" id="images">
+        <img src="./img/1_slime.png" alt="slime">
+        <span> > </span>
+        <img src="./img/2_hoimi_slime.png" alt="hoimi_slime">
+        <span> > </span>
+        <img src="./img/3_arumiraji.png" alt="arumiraji">
+        <span> > </span>
+        <img src="./img/4_minidemon.png" alt="minidemon">
+        <span> > </span>
+        <img src="./img/5_bakudan_iwa.png" alt="bakudan_iwa">
+        <span> > </span>
+    </div>
+    <div class="images" id="images2">
+        <img src="./img/6_baberu_boburu.png" alt="baberu_boburu">
+        <span> > </span>
+        <img src="./img/hatena.png" alt="">
+        <span> > </span>
+        <img src="./img/hatena.png" alt="">
+        <span> > </span>
+        <img src="./img/hatena.png" alt="">
+        <span> > </span>
+        <img src="./img/hatena.png" alt="">
+        <span> > </span>
+        <img src="./img/hatena.png" alt="">
+    </div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
