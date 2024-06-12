@@ -3,60 +3,130 @@ const {Engine, Render, World, Bodies, Body, Events} = Matter;
 
 let total_score = 0
 
+// Web Audio APIの準備
+const audioContext = new AudioContext();
+let bgmSource;
+// BGMのパス
+const bgmPath = [
+    null, // slime, hoimi_slime, arumiraji, minidemon, bakudan_iwa, baberu_boburu metauにはBGMなし
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    './sound/dorumagesu.mp3',
+    './sound/rapuso-n.mp3',
+    './sound/dekkachan.mp3',
+    './sound/sonshi.mp3',
+];
+
+// BGMファイルの読み込み
+fetch('./sound/DQ8_casino.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+        bgmSource = audioContext.createBufferSource();
+        bgmSource.buffer = audioBuffer;
+        bgmSource.connect(audioContext.destination);
+        bgmSource.loop = true; // ループ再生
+
+        // bgmSource が初期化された後に再生を開始
+        if (document.readyState === 'complete') {
+            bgmSource.start();
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                bgmSource.start(); // ページ読み込み時に再生
+            });
+        }
+    });
+
 // オブジェクトの定義の配列
 const objectDefinitions = [
     {
-        texture: "./img/dekkachan.png",
-        size: 25,
-        label: "suzu_circle",
-        originalWidth: 637, // 画像の元の幅
-        originalHeight: 637, // 画像の元の高さ
-        score: 10
-    },
-    {
-        texture: "./img/dekkachan.png",
-        size: 30,
-        label: "kanineko_circle",
-        originalWidth: 637, // 画像の元の幅
-        originalHeight: 637, // 画像の元の高さ
-        score: 20
-    },
-    {
-        texture: "./img/dekkachan.png",
-        size: 35,
-        label: "nikukyu_circle",
-        originalWidth: 637, // 画像の元の幅
-        originalHeight: 637, // 画像の元の高さ
-        score: 30
-    },
-    {
-        texture: "./img/dekkachan.png",
-        size: 40,
-        label: "mouse_circle",
-        originalWidth: 637, // 画像の元の幅
-        originalHeight: 637, // 画像の元の高さ
-        score: 40
-    },
-    {
-        texture: "./img/dekkachan.png",
+        texture: "./img/1_slime.png",
         size: 50,
-        label: "neko_circle",
+        label: "slime",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
         score: 50
     },
     {
-        texture: "./img/dekkachan.png",
+        texture: "./img/2_hoimi_slime.png",
         size: 60,
-        label: "ebi_circle",
+        label: "hoimi_slime",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
         score: 60
     },
     {
-        texture: "./img/dekkachan.png",
+        texture: "./img/3_arumiraji.png",
         size: 80,
-        label: "lion_circle",
+        label: "arumiraji",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/4_minidemon.png",
+        size: 100,
+        label: "minidemon",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/5_bakudan_iwa.png",
+        size: 120,
+        label: "bakudan_iwa",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/6_baberu_boburu.png",
+        size: 150,
+        label: "baberu_boburu",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/7_metal_king.png",
+        size: 160,
+        label: "metal_king",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/8_dorumagesu.png",
+        size: 170,
+        label: "dorumagesu",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/9_rapuso-n.png",
+        size: 180,
+        label: "rapuso-n",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/10_dekkachan.png",
+        size: 200,
+        label: "dekkachan200",
+        originalWidth: 637, // 画像の元の幅
+        originalHeight: 637, // 画像の元の高さ
+        score: 70
+    },
+    {
+        texture: "./img/11_sonshi.png",
+        size: 300,
+        label: "sonshi",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
         score: 70
@@ -65,7 +135,7 @@ const objectDefinitions = [
 
 // 次に落とすオブジェクトをランダムに選択して作成する関数
 function createRandomFallingObject(x, y) {
-    const randomIndex = Math.floor(Math.random() * objectDefinitions.length);
+    const randomIndex = Math.floor(Math.random() * 6);
     const objectDef = objectDefinitions[randomIndex];
 
     // スケールを計算（オブジェクトのサイズに合わせる）
@@ -107,7 +177,9 @@ const render = Render.create({
     engine: engine,
     options: {
         wireframes: false,
-        background: 'rgba(0,0,0,0)' //    背景を透明に
+        background: 'rgba(0,0,0,0)',
+        width: window.innerWidth * 0.99,
+        height: window.innerHeight * 0.8,
     }
 });
 
@@ -123,6 +195,9 @@ const rightWall = Bodies.rectangle(width, height / 2, 20, height, {isStatic: tru
 // 床と壁をワールドに追加
 World.add(engine.world, [ground, leftWall, rightWall]);
 
+// BGM再生済みフラグの配列
+const isBgmPlayed = Array(bgmPath.length).fill(false); // 全てのBGMを未再生に初期化
+
 // 2つのオブジェクトが衝突した時に呼ばれる関数
 function mergeBodies(pair) {
     const bodyA = pair.bodyA;
@@ -133,6 +208,12 @@ function mergeBodies(pair) {
         const nextObjectDef = getNextObjectDefinition(bodyA.label);
 
         if (nextObjectDef) {
+            // BGM再生処理を追加
+            const bgmIndex = objectDefinitions.findIndex(obj => obj.label === nextObjectDef.label);
+            if (bgmIndex >= 7 && bgmIndex <= 10 && !isBgmPlayed[bgmIndex]) { // 8~11のオブジェクトで、まだ再生されていない場合
+                playBgm(bgmIndex);
+                isBgmPlayed[bgmIndex] = true; // 再生済みフラグを立てる
+            }
             total_score += nextObjectDef.score;
             $('#score').html(total_score.toString())
             const newX = (bodyA.position.x + bodyB.position.x) / 2;
@@ -158,6 +239,25 @@ function mergeBodies(pair) {
     }
 }
 
+// BGMを再生する関数
+async function playBgm(index) {
+    if (!bgmPath[index]) return; // BGMパスがnullの場合は再生しない
+
+    if (bgmSource) {
+        bgmSource.stop(); // 現在のBGMを停止
+    }
+
+    const response = await fetch(bgmPath[index]);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+    bgmSource = audioContext.createBufferSource();
+    bgmSource.buffer = audioBuffer;
+    bgmSource.connect(audioContext.destination);
+    bgmSource.loop = true;
+    bgmSource.start();
+}
+
 // オブジェクトが衝突した時にイベントリスナーを設定
 Events.on(engine, 'collisionStart', event => {
     const pairs = event.pairs;
@@ -180,6 +280,7 @@ window.addEventListener('keydown', event => {
         // スペースキーでオブジェクトを落下
         isFalling = true; // 落下中フラグを立てる
         Body.setStatic(nextObject, false);
+
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
             World.add(engine.world, nextObject);

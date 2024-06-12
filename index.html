@@ -5,9 +5,17 @@
     <title></title>
 </head>
 <body>
+<style>
+    .score {
+        font-size: 30px;
+        margin-bottom: 24px;
+    }
+</style>
 <div id="background"></div>
-<canvas id="matter-canvas"></canvas>
-<div>score:<p id="score">0</p></div>
+<div class="canvas-wrap">
+    <canvas id="matter-canvas"></canvas>
+</div>
+<div class="score">score: <span id="score">0</span></div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="./script.js"></script>
