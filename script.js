@@ -199,8 +199,7 @@ const objectDefinitions = [
 
 // 次に落とすオブジェクトをランダムに選択して作成する関数
 function createRandomFallingObject(x, y) {
-    // const randomIndex = Math.floor(Math.random() * 6);
-    const randomIndex = 5;
+    const randomIndex = Math.floor(Math.random() * 6);
     const objectDef = objectDefinitions[randomIndex];
 
     // スケールを計算（オブジェクトのサイズに合わせる）
