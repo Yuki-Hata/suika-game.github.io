@@ -72,32 +72,18 @@ dropButton.addEventListener('touchstart', () => {
         isFalling = true;
         Body.setStatic(nextObject, false);
 
-        // BGM再生 (初回のみ)
-        if (bgmSource && !bgmSource.isStarted) {
-            bgmSource.start();
-            bgmSource.isStarted = true; // 再生済みフラグ
-        }
-
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
-            World.add(engine.world, nextObject);
-            isFalling = false;
+            World.add(engine.world, nextObject); // nextObject を World に追加
+            isFalling = false; // 落下完了後にフラグを戻す (追加処理の後)
         }, 2000);
     }
 });
 
-// touchmove イベントを追加 (タッチ中の移動に対応)
-document.addEventListener('touchmove', (event) => {
-    if (!isFalling) {
-        const touchX = event.touches[0].clientX;
-        if (touchX < width / 2) {
-            Body.translate(nextObject, {x: -20, y: 0});
-        } else {
-            Body.translate(nextObject, {x: 20, y: 0});
-        }
-    }
-});
-
+// 画面スクロール禁止
+document.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false }); // passive: false を指定
 
 // BGMファイルの読み込み
 fetch('./sound/DQ8_casino.mp3')
