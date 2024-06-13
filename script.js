@@ -100,6 +100,9 @@ dropButton.addEventListener('touchstart', () => {
             });
         }
 
+        // SE再生
+        playSE();  // この行を追加
+
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
             World.add(engine.world, nextObject); // nextObject を World に追加
@@ -135,6 +138,24 @@ fetch('./sound/DQ8_casino.mp3')
                 });
             }
         }
+    });
+
+let seBuffer; // SE用のAudioBuffer
+// SEファイルの読み込み
+fetch('./sound/papa.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+        seBuffer = audioBuffer;
+    });
+
+let mergeSEBuffer; // 合体用のSE用AudioBuffer
+// SEファイルの読み込み
+fetch('./sound/pa.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+        mergeSEBuffer = audioBuffer;
     });
 
 // オブジェクトの定義の配列
@@ -342,8 +363,26 @@ function mergeBodies(pair) {
 
             World.remove(engine.world, [bodyA, bodyB]);
             World.add(engine.world, newBody);
+
+            // 合体時のSE再生
+            playMergeSE();
         }
     }
+}
+
+// SEを再生する関数
+function playSE() {
+    const seSource = audioContext.createBufferSource();
+    seSource.buffer = seBuffer;
+    seSource.connect(audioContext.destination);
+    seSource.start(0);
+}
+
+function playMergeSE() {
+    const mergeSESource = audioContext.createBufferSource();
+    mergeSESource.buffer = mergeSEBuffer;
+    mergeSESource.connect(audioContext.destination);
+    mergeSESource.start(0);
 }
 
 // BGMを再生する関数
