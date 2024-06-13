@@ -50,7 +50,7 @@
             position: relative;
         }
 
-        #instruction-tips {
+        .instruction-tips {
             color: red;
         }
 
@@ -88,12 +88,12 @@
                 margin: 0 8px;
             }
         }
-
     </style>
 </head>
 <body>
 <p id="instruction"></p>
-<p id="instruction-tips"></p>
+<p class="instruction-tips" id="instruction-tips"></p>
+<p class="instruction-tips">※SP版だと音声が再生されないバグあり</p>
 <canvas id="matter-canvas"></canvas>
 <div class="images-container">
     <div class="score">score: <span id="score">0</span></div>
@@ -140,7 +140,7 @@
     const instructionTipsElement = document.getElementById('instruction-tips');
     if (isMobile) {
         instructionElement.textContent = "←→で移動、Dropで落下";
-        instructionTipsElement.textContent = "※何も落ちてこないときはDrop1回押してみて（バグ）";
+        instructionTipsElement.textContent = '※何も落ちてこないときはDrop1回押してみてaa';
 
     } else {
         instructionElement.textContent = "←→で移動、スペースで落下 ※何も落ちてこないときは回スペース押してみて";

@@ -101,7 +101,7 @@ dropButton.addEventListener('touchstart', () => {
         }
 
         // SE再生
-        playSE();  // この行を追加
+        playSE();
 
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
@@ -425,6 +425,7 @@ window.addEventListener('keydown', event => {
         // スペースキーでオブジェクトを落下
         isFalling = true; // 落下中フラグを立てる
         Body.setStatic(nextObject, false);
+        playSE();
 
         setTimeout(() => {
             nextObject = createRandomFallingObject(width / 2, 30);
