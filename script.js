@@ -36,7 +36,7 @@ document.addEventListener('touchstart', () => {
         });
         firstTouch = false;
     }
-});
+}, {passive: false});
 
 // ボタン要素を取得
 const leftButton = document.getElementById('leftButton');
@@ -123,15 +123,17 @@ fetch('./sound/DQ8_casino.mp3')
         bgmSource.loop = true; // ループ再生
         bgmSource.isStarted = false; // 再生開始済みフラグを初期化
 
-        // bgmSource が初期化された後に再生を開始
-        if (document.readyState === 'complete') {
-            bgmSource.start();
-            bgmSource.isStarted = true; // 再生済みフラグをtrueに
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                bgmSource.start(); // ページ読み込み時に再生
+        // PCではページ読み込み時に再生を開始
+        if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            if (document.readyState === 'complete') {
+                bgmSource.start();
                 bgmSource.isStarted = true; // 再生済みフラグをtrueに
-            });
+            } else {
+                document.addEventListener('DOMContentLoaded', () => {
+                    bgmSource.start(); // ページ読み込み時に再生
+                    bgmSource.isStarted = true; // 再生済みフラグをtrueに
+                });
+            }
         }
     });
 
