@@ -226,7 +226,7 @@ const objectDefinitions = [
     },
     {
         texture: "./img/9_rapuso-n.png",
-        size: 200,
+        size: 230,
         label: "rapuso-n",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
@@ -234,7 +234,7 @@ const objectDefinitions = [
     },
     {
         texture: "./img/10_dekkachan.png",
-        size: 250,
+        size: 270,
         label: "dekkachan200",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
