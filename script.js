@@ -6,6 +6,7 @@ let total_score = 0
 // Web Audio APIの準備
 const audioContext = new AudioContext();
 let bgmSource;
+
 // BGMのパス
 const bgmPath = [
     null, // slime, hoimi_slime, arumiraji, minidemon, bakudan_iwa, baberu_boburu にはBGMなし
@@ -158,7 +159,7 @@ const objectDefinitions = [
         label: "arumiraji",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 80
     },
     {
         texture: "./img/4_minidemon.png",
@@ -166,7 +167,7 @@ const objectDefinitions = [
         label: "minidemon",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 80
     },
     {
         texture: "./img/5_bakudan_iwa.png",
@@ -174,31 +175,31 @@ const objectDefinitions = [
         label: "bakudan_iwa",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 120
     },
     {
         texture: "./img/6_baberu_boburu.png",
-        size: 150,
+        size: 130,
         label: "baberu_boburu",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 130
     },
     {
         texture: "./img/7_don_mogura.png",
-        size: 160,
+        size: 150,
         label: "don_mogura",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 150
     },
     {
         texture: "./img/8_dorumagesu.png",
-        size: 170,
+        size: 160,
         label: "dorumagesu",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 160
     },
     {
         texture: "./img/9_rapuso-n.png",
@@ -206,7 +207,7 @@ const objectDefinitions = [
         label: "rapuso-n",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 180
     },
     {
         texture: "./img/10_dekkachan.png",
@@ -214,15 +215,15 @@ const objectDefinitions = [
         label: "dekkachan200",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 200
     },
     {
         texture: "./img/11_sonshi.png",
-        size: 300,
+        size: 500,
         label: "sonshi",
         originalWidth: 637, // 画像の元の幅
         originalHeight: 637, // 画像の元の高さ
-        score: 70
+        score: 500
     },
 ];
 
