@@ -12,33 +12,12 @@
 
         body {
             position: relative;
+            padding-top: 20px;
         }
 
         p {
             font-size: 30px;
             margin: 0;
-        }
-
-        .images-wrap {
-            width: 100vw;
-            max-width: 1400px;
-        }
-
-        .images {
-            display: flex;
-            margin-bottom: 8px;
-            align-items: center;
-
-            img {
-                width: calc(100% / 7.5);
-                max-width: 70px;
-            }
-
-            span {
-                font-size: 3.2vw;
-                display: inline-block;
-                margin: 0 8px;
-            }
         }
 
         .controls {
@@ -70,41 +49,80 @@
         #matter-canvas {
             position: relative;
         }
+
+        #instruction-tips {
+            color: red;
+        }
+
+        .score {
+            font-family: "Hiragino Maru Gothic ProN";
+            font-weight: 600;
+            font-size: 40px;
+        }
+
+        .images-container {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .images-wrap {
+            max-width: 1400px;
+            display: inline-block;
+        }
+
+        .images {
+            display: flex;
+            margin-bottom: 8px;
+            align-items: center;
+
+            img {
+                width: calc(100% / 7.5);
+                max-width: 70px;
+            }
+
+            span {
+                font-size: 3.2vw;
+                display: inline-block;
+                margin: 0 8px;
+            }
+        }
+
     </style>
 </head>
 <body>
 <p id="instruction"></p>
-<div>
-    <div>
-        <canvas id="matter-canvas"></canvas>
-    </div>
-</div>
-<div class="score">score: <span id="score">0</span></div>
-<div class="images-wrap">
-    <div class="images" id="images">
-        <img src="./img/1_slime.png" alt="slime">
-        <span> > </span>
-        <img src="./img/2_hoimi_slime.png" alt="hoimi_slime">
-        <span> > </span>
-        <img src="./img/3_arumiraji.png" alt="arumiraji">
-        <span> > </span>
-        <img src="./img/4_minidemon.png" alt="minidemon">
-        <span> > </span>
-        <img src="./img/5_bakudan_iwa.png" alt="bakudan_iwa">
-        <span> > </span>
-    </div>
-    <div class="images" id="images2">
-        <img src="./img/6_baberu_boburu.png" alt="baberu_boburu">
-        <span> > </span>
-        <img src="./img/hatena.png" alt="">
-        <span> > </span>
-        <img src="./img/hatena.png" alt="">
-        <span> > </span>
-        <img src="./img/hatena.png" alt="">
-        <span> > </span>
-        <img src="./img/hatena.png" alt="">
-        <span> > </span>
-        <img src="./img/hatena.png" alt="">
+<p id="instruction-tips"></p>
+<canvas id="matter-canvas"></canvas>
+<div class="images-container">
+    <div class="score">score: <span id="score">0</span></div>
+    <div class="images-wrap">
+        <div class="images" id="images">
+            <img src="./img/1_slime.png" alt="slime">
+            <span> > </span>
+            <img src="./img/2_hoimi_slime.png" alt="hoimi_slime">
+            <span> > </span>
+            <img src="./img/3_arumiraji.png" alt="arumiraji">
+            <span> > </span>
+            <img src="./img/4_minidemon.png" alt="minidemon">
+            <span> > </span>
+            <img src="./img/5_bakudan_iwa.png" alt="bakudan_iwa">
+            <span> > </span>
+        </div>
+        <div class="images" id="images2">
+            <img src="./img/6_baberu_boburu.png" alt="baberu_boburu">
+            <span> > </span>
+            <img src="./img/hatena.png" alt="">
+            <span> > </span>
+            <img src="./img/hatena.png" alt="">
+            <span> > </span>
+            <img src="./img/hatena.png" alt="">
+            <span> > </span>
+            <img src="./img/hatena.png" alt="">
+            <span> > </span>
+            <img src="./img/hatena.png" alt="">
+        </div>
     </div>
 </div>
 <div class="controls">
@@ -119,10 +137,14 @@
 
     // 操作方法の説明を設定
     const instructionElement = document.getElementById('instruction');
+    const instructionTipsElement = document.getElementById('instruction-tips');
     if (isMobile) {
         instructionElement.textContent = "←→で移動、Dropで落下";
+        instructionTipsElement.textContent = "※何も落ちてこないときはDrop1回押してみて（バグ）";
+
     } else {
-        instructionElement.textContent = "←→で移動、スペースで落下";
+        instructionElement.textContent = "←→で移動、スペースで落下 ※何も落ちてこないときは回スペース押してみて";
+        instructionTipsElement.textContent = "※何も落ちてこないときはスペース1回押してみて（バグ）";
     }
 
     // .controls 要素を取得
