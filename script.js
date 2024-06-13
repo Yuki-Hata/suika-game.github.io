@@ -52,6 +52,7 @@ let moveRightInterval;
 
 // ボタンのイベントリスナーを設定 (touchstart, touchend イベントに変更)
 leftButton.addEventListener('touchstart', () => {
+    event.preventDefault();
     isLeftButtonPressed = true;
     moveLeftInterval = setInterval(() => {
         if (isLeftButtonPressed && !isFalling) {
@@ -61,12 +62,14 @@ leftButton.addEventListener('touchstart', () => {
 });
 
 leftButton.addEventListener('touchend', () => { // touchend に修正
+    event.preventDefault();
     isLeftButtonPressed = false;
     clearInterval(moveLeftInterval); // インターバルをクリア
 });
 
 // 右ボタンも同様に設定 (touchstart, touchend イベントに変更)
 rightButton.addEventListener('touchstart', () => {
+    event.preventDefault();
     isRightButtonPressed = true;
     moveRightInterval = setInterval(() => {
         if (isRightButtonPressed && !isFalling) {
@@ -76,12 +79,14 @@ rightButton.addEventListener('touchstart', () => {
 });
 
 rightButton.addEventListener('touchend', () => { // touchend に修正
+    event.preventDefault();
     isRightButtonPressed = false;
     clearInterval(moveRightInterval); // インターバルをクリア
 });
 
 // Drop ボタンも touchstart イベントに変更
 dropButton.addEventListener('touchstart', () => {
+    event.preventDefault();
     if (!isFalling) {
         isFalling = true;
         Body.setStatic(nextObject, false);
@@ -229,7 +234,7 @@ function createRandomFallingObject(x, y) {
     // スケールを計算（オブジェクトのサイズに合わせる）
     const scale = objectDef.size * 2 / Math.max(objectDef.originalWidth, objectDef.originalHeight);
 
-    const object = Bodies.circle(x, y, objectDef.size, {
+    return Bodies.circle(x, y, objectDef.size, {
         label: objectDef.label,
         isStatic: true,
         render: {
@@ -240,7 +245,6 @@ function createRandomFallingObject(x, y) {
             }
         }
     });
-    return object;
 }
 
 // 次のオブジェクトを取得する関数
