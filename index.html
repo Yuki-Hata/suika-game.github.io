@@ -43,12 +43,12 @@
 
         .controls {
             position: absolute; /* .controlsを絶対配置にする */
-            bottom: 35%; /* 下からの距離を30%に設定 */
+            bottom: 30%; /* 下からの距離を30%に設定 */
             left: 50%;
             transform: translate(-50%, 0); /* 左右中央に配置 */
             display: flex;
             justify-content: center;
-            gap: 200px; /* ボタン間の隙間 */
+            gap: 100px; /* ボタン間の隙間 */
             z-index: 999;
         }
 
@@ -73,8 +73,7 @@
     </style>
 </head>
 <body>
-<p>PCのみ動作</p>
-<p>←→で移動、スペースで落下</p>
+<p id="instruction"></p>
 <div>
     <div>
         <canvas id="matter-canvas"></canvas>
@@ -117,6 +116,14 @@
 <script>
     // デバイスの種類を判別 (userAgent を使用)
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    // 操作方法の説明を設定
+    const instructionElement = document.getElementById('instruction');
+    if (isMobile) {
+        instructionElement.textContent = "←→で移動、Dropで落下";
+    } else {
+        instructionElement.textContent = "←→で移動、スペースで落下";
+    }
 
     // .controls 要素を取得
     const controlsElement = document.querySelector('.controls');
