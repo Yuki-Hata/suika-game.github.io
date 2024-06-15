@@ -328,45 +328,51 @@ function mergeBodies(pair) {
     if (bodyA.label === bodyB.label) {
         const nextObjectDef = getNextObjectDefinition(bodyA.label);
 
-        if (nextObjectDef) {
-            // BGM再生処理を追加
-            const bgmIndex = objectDefinitions.findIndex(obj => obj.label === nextObjectDef.label);
-            if (bgmIndex >= 6 && bgmIndex <= 10 && !isBgmPlayed[bgmIndex]) { // 7~11のオブジェクトで、まだ再生されていない場合
-                playBgm(bgmIndex);
-                isBgmPlayed[bgmIndex] = true; // 再生済みフラグを立てる
-            }
-            // 画像差し替え処理を追加
-            if (bgmIndex >= 6 && bgmIndex <= 10) { // 7~11のオブジェクトの場合
-                if (imageElements[bgmIndex - 5].src.endsWith('hatena.png')) { // まだhatena.pngの場合
-                    imageElements[bgmIndex - 5].src = nextObjectDef.texture; // 画像を差し替え
-                }
-            }
-
-            total_score += nextObjectDef.score;
-            $('#score').html(total_score.toString())
-            const newX = (bodyA.position.x + bodyB.position.x) / 2;
-            const newY = (bodyA.position.y + bodyB.position.y) / 2;
-
-            // スケールを計算（オブジェクトのサイズに合わせる）
-            const scale = nextObjectDef.size * 2 / Math.max(nextObjectDef.originalWidth, nextObjectDef.originalHeight);
-
-            const newBody = Bodies.circle(newX, newY, nextObjectDef.size, {
-                label: nextObjectDef.label,
-                render: {
-                    sprite: {
-                        texture: nextObjectDef.texture,
-                        xScale: scale,
-                        yScale: scale
-                    }
-                }
-            });
-
-            World.remove(engine.world, [bodyA, bodyB]);
-            World.add(engine.world, newBody);
-
-            // 合体時のSE再生
-            playMergeSE();
+        // 最後のobjectDefinitionの要素同士の衝突、または次のオブジェクトが存在しない場合
+        if (!nextObjectDef || bodyA.label === objectDefinitions[objectDefinitions.length - 1].label) {
+            World.remove(engine.world, [bodyA, bodyB]); // 要素を削除
+            return; // 処理を終了
         }
+
+        // BGM再生処理
+        const bgmIndex = objectDefinitions.findIndex(obj => obj.label === nextObjectDef.label);
+        if (bgmIndex >= 6 && bgmIndex <= objectDefinitions.length - 1 && !isBgmPlayed[bgmIndex]) {
+            playBgm(bgmIndex);
+            isBgmPlayed[bgmIndex] = true; // 再生済みフラグを立てる
+        }
+
+        // 画像差し替え処理
+        if (bgmIndex >= 6 && bgmIndex <= objectDefinitions.length - 1) {
+            if (imageElements[bgmIndex - 5].src.endsWith('hatena.png')) { // まだhatena.pngの場合
+                imageElements[bgmIndex - 5].src = nextObjectDef.texture; // 画像を差し替え
+            }
+        }
+
+        total_score += nextObjectDef.score;
+        $('#score').html(total_score.toString())
+
+        const newX = (bodyA.position.x + bodyB.position.x) / 2;
+        const newY = (bodyA.position.y + bodyB.position.y) / 2;
+
+        // スケールを計算（オブジェクトのサイズに合わせる）
+        const scale = nextObjectDef.size * 2 / Math.max(nextObjectDef.originalWidth, nextObjectDef.originalHeight);
+
+        const newBody = Bodies.circle(newX, newY, nextObjectDef.size, {
+            label: nextObjectDef.label,
+            render: {
+                sprite: {
+                    texture: nextObjectDef.texture,
+                    xScale: scale,
+                    yScale: scale
+                }
+            }
+        });
+
+        World.remove(engine.world, [bodyA, bodyB]);
+        World.add(engine.world, newBody);
+
+        // 合体時のSE再生
+        playMergeSE();
     }
 }
 
